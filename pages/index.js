@@ -25,7 +25,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h1>Hacklahoma 2023</h1>
+        <Typography variant="h1">Hacklahoma 2023</Typography>
 
         {user && (
           <Grid container sx={{ height: "100%" }}>
