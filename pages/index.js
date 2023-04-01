@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 
@@ -24,18 +23,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Hacklahoma</h1>
-        <a href="/api/auth/login">Login</a>
-        <a href="/api/auth/logout">Logout</a>
-
-
-        {user && (
-          <div>
-            <img src={user.picture} alt={user.name} />
-            <h2>{user.name}</h2>
-            <p>{user.email}</p>
-          </div>
-        )}
+        <h1>Hacklahoma 2023</h1>
       </main>
     </>
   );
