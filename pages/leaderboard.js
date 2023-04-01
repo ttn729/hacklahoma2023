@@ -37,9 +37,8 @@ export default function Leaderboard() {
   }, [leaderboardRankings]);
 
   return (
-    <Box sx={{ paddingTop: 5 }}>
+    <Box sx={{ padding: 5 }}>
       <Typography variant="h1">Leaderboard Top 10</Typography>
-      <Button onClick={updatedTokens}>Click on me to change the DB</Button>
 
       {leaderboardRankings?.map((ranking, index) => {
         return (

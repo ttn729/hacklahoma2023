@@ -9,15 +9,42 @@ export default function Game() {
 
   const onClickRoll = () => {
 
-    let sum = counters.reduce(function(a, b){
+    let tokensSpent = counters.reduce(function(a, b){
         return a + b;
       });
-    console.log(sum);
+
+    setTokens(tokens - tokensSpent + calculateTokensEarned(counters, [0,0,1]));
+    onClickReset();
   };
 
   const onClickReset = () => {
     setCounters([0, 0, 0, 0, 0, 0]);
   }
+
+  const calculateTokensEarned = (counters, dice) => {
+    // counters is an array of size 6
+    // dice is an array of size 3 with values 0-5(indices of counters)
+
+    let delta = 0;
+
+    let seen = [];
+
+    dice.forEach(index => {
+        if (seen.includes(index)) {
+            delta += counters[index];
+        }
+        else {
+            delta += counters[index] * 2;
+            seen.push(index);
+        }
+    });
+
+    console.log("You earned this many tokens", delta);
+
+    return delta;
+  }
+
+
 
   return (
     <Container maxWidth="sm">
