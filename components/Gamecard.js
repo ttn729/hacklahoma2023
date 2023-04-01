@@ -1,20 +1,17 @@
 import * as React from "react";
 import { Card, CardActionArea, Button, CardContent } from "@mui/material";
 
-export default function Gamecard() {
-    const [bets, setBets] = React.useState(0)
-
-    function handleClick() {
-        setBets(bets + 1)
-        console.log(bets)
-    }
-return (
+export default function Gamecard({ index, counters, setCounters }) {
+  function handleClick() {
+    let copy = [...counters];
+    copy[index] += 1;
+    setCounters(copy);
+  }
+  return (
     <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea onClick={handleClick}>
-            <CardContent>
-                {bets}
-            </CardContent>
-        </CardActionArea>
+      <CardActionArea onClick={handleClick}>
+        <CardContent>{counters[index]}</CardContent>
+      </CardActionArea>
     </Card>
-)
+  );
 }
