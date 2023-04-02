@@ -5,14 +5,20 @@ export default async (req, res) => {
     const client = await clientPromise;
     const db = client.db("userTokens");
 
-    const updatedTokens = await db
-      .collection("tokens")
-      .updateOne(
-        { email: req.body.email },
-        { $set: { tokens: req.body.tokens } }
-      );
+    let updateField = {};
+    if (req.body.tokens) {
+      updateField = { tokens: req.body.tokens };
+    } else if (req.body.name) {
+      updateField = { name: req.body.name };
+    } else {
+      throw new Error("Invalid request body");
+    }
 
-    res.json(updatedTokens);
+    const updatedUser = await db
+      .collection("tokens")
+      .updateOne({ email: req.body.email }, { $set: updateField });
+
+    res.json(updatedUser);
   } catch (e) {
     console.error(e);
   }
