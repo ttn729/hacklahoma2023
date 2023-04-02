@@ -40,7 +40,7 @@ const Game = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
-  if (!tokens) return <div>Loading Tokens...</div>; // Add this line to wait for tokens
+  if (tokens === null) return <div>Loading Tokens...</div>; // Add this line to wait for tokens
 
   const onClickRoll = () => {
     let tokensSpent = counters.reduce(function (a, b) {
