@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { Box, TextField, Typography, Button } from "@mui/material";
+import { Box, TextField, Typography, Button, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 
 export default function Settings() {
   const { user, error, isLoading } = useUser();
+  const router = useRouter();
 
   const getUserTokens = async () => {
     const response = await fetch("/api/getTokenForUser", {
@@ -36,8 +37,6 @@ export default function Settings() {
     // setUserPicture(user.picture);
   }, [user, isLoading]);
 
-  const router = useRouter();
-
   const [userName, setUserName] = React.useState("");
   const [userPicture, setUserPicture] = React.useState("");
   const [changeUserName, setChangeUserName] = React.useState("");
@@ -54,51 +53,25 @@ export default function Settings() {
         name: changeUserName || userName,
       }),
     });
-    window.location.reload();
+    // window.location.reload();
+    setChangeUserName("")
+    router.push("/settings")
   };
 
   return (
-    <Box sx={{ padding: 5 }}>
-      {!changeUserName && (
-        <Typography variant="h2">Username: {userName}</Typography>
-      )}
-
-      {changeUserName && (
-        <Typography variant="h2">Username: {changeUserName}</Typography>
-      )}
-
-      <TextField
-        value={changeUserName}
-        onChange={(e) => setChangeUserName(e.target.value)}
-      />
-
-      {/* {!selectedImage && (
-        <Typography variant="h2">
-          Profile Picture: <img src={userPicture} alt={userName} />
-        </Typography>
-      )}
-
-      {selectedImage && (
-        <Typography variant="h2">
-          Profile Picture:{" "}
-          <img
-            src={URL.createObjectURL(selectedImage)}
-            alt={userName}
-            width={96}
-            height={96}
-          />
-        </Typography>
-      )}
-
-      <input
-        type="file"
-        name="myImage"
-        onChange={(event) => {
-          console.log(event.target.files[0]);
-          setSelectedImage(event.target.files[0]);
-        }}
-      /> */}
-      <Button onClick={updateDB}>Update Information</Button>
-    </Box>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center">
+      <Box sx={{ padding: 10 }}>
+        <TextField id="outlined-basic" label="Change username"
+          value={changeUserName}
+          onChange={(e) => setChangeUserName(e.target.value)}
+        />
+        <p><Button onClick={updateDB} disabled={changeUserName === ""}>Update Information</Button></p>
+      </Box>
+    </Grid>
   );
 }

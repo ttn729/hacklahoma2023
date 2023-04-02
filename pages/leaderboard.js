@@ -45,7 +45,7 @@ export default function Leaderboard() {
       alignItems="center"
       justifyContent="center">
       <Box sx={{ p: 2 }}>
-        <Typography variant="h1">Leaderboard</Typography>
+        <Typography variant="h1" color='secondary'>Leaderboard</Typography>
         
         {leaderboardRankings?.map((ranking, index) => {
           return (
@@ -61,7 +61,7 @@ export default function Leaderboard() {
             >
               <Box>
                 <h1>Rank #{index + 1}</h1>
-                <h3>Email: {ranking.email}</h3>
+                <h3>Name: {ranking.name}</h3>
                 <h3>Tokens: {ranking.tokens}</h3>
               </Box>
             </Box>

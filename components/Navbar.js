@@ -66,9 +66,6 @@ export default function Navbar() {
         <Link href="/leaderboard">
           <h1>Leaderboard</h1>
         </Link>
-        <Link href="/settings">
-          <h1>Settings</h1>
-        </Link>
       </Box>
 
       <Box sx={{ float: "right" }}>
@@ -82,6 +79,9 @@ export default function Navbar() {
           <Box sx={{ flexDirection: "column" }}>
             <img src={user.picture} alt={user.name} />
             <h2>{userName}</h2>
+            <Link href="/settings">
+              <p>Settings</p>
+            </Link>
             <Link href="/api/auth/logout">Logout</Link>
           </Box>
         )}

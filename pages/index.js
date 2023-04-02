@@ -26,7 +26,6 @@ export default function Home() {
       </Head>
 
 
-      {/* <main className={styles.main}> */}
       {user && (
         <Grid
           container
@@ -35,7 +34,7 @@ export default function Home() {
           alignItems="center"
           justifyContent="center">
             <Box sx={{ p: 4 }}>
-          <Typography variant="h1">Hacklahoma 2023</Typography>
+          <Typography variant="h1" color="secondary">Hacklahoma 2023</Typography>
           </Box>
           <Link href="/game">
 
@@ -43,7 +42,19 @@ export default function Home() {
           </Link>
         </Grid>
       )}
-      {/* </main> */}
+
+{!user && (
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center">
+            <Box sx={{ p: 25 }}>
+          <Typography variant="h1" color="secondary">Hacklahoma 2023</Typography>
+          </Box>
+        </Grid>
+      )}
     </>
   );
 }
