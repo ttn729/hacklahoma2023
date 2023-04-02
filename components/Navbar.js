@@ -1,6 +1,7 @@
 import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { Box, Item } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
@@ -9,13 +10,33 @@ export default function Navbar() {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <Box sx={{ justifyItems: "space-between", flexDirection: "row" }}>
-      <Box>
-        <h1>Hello</h1>
+    <Box
+      sx={{
+        justifyItems: "space-between",
+        flexDirection: "row",
+        m: 5,
+        zIndex: 1,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          float: "left",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Link href="/">
+          <h1>Home</h1>
+        </Link>
       </Box>
 
-      <Box>
-        {!user && <a href="/api/auth/login">Login</a>}
+      <Box sx={{ float: "right" }}>
+        {!user && (
+          <Button variant="contained">
+            <a href="/api/auth/login">Login</a>
+          </Button>
+        )}
 
         {user && (
           <Box sx={{ flexDirection: "column" }}>

@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-
+import styles from "@/styles/Home.module.css";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { Grid, Box, Typography } from "@mui/material";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +24,32 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>Hacklahoma 2023</h1>
+      <main className={styles.main}>
+        <Typography variant="h1">Hacklahoma 2023</Typography>
+
+        {user && (
+          <Grid container sx={{ height: "100%" }}>
+            <Grid item xs={6}>
+              <Link href="/game">
+                <Box sx={{ background: "pink" }}>
+                  <Typography align="center" variant="h1">
+                    Start Game
+                  </Typography>
+                </Box>
+              </Link>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Link href="/leaderboard">
+                <Box sx={{ background: "#ADD8E6" }}>
+                  <Typography align="center" variant="h1">
+                    Leaderboard
+                  </Typography>
+                </Box>
+              </Link>
+            </Grid>
+          </Grid>
+        )}
       </main>
     </>
   );
