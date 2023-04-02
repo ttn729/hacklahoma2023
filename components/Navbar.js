@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
+  const router = useRouter();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -31,7 +32,7 @@ export default function Navbar() {
     if (isLoading) {
       return; // Wait for the user object to load
     }
-  
+
     if (!user) {
       router.push("/");
     } else {
@@ -39,7 +40,6 @@ export default function Navbar() {
     }
   }, [user, isLoading, getUserTokens, router]);
 
-  const router = useRouter();
   const [userName, setUserName] = React.useState("");
 
   return (
