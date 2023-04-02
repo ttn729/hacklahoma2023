@@ -6,8 +6,6 @@ import darthVader from "../public/darthVader.png";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
 
-
-
 const Game = () => {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
   const [tokens, setTokens] = React.useState(null);
@@ -156,10 +154,19 @@ const Game = () => {
         </Grid2>
       </Grid2>
 
-      <Button onClick={onClickRoll}>Roll</Button>
+      <Button
+        onClick={onClickRoll}
+        disabled={
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) > tokens
+        }
+      >
+        Roll
+      </Button>
       <Button onClick={onClickReset}>Reset</Button>
     </Container>
   );
-}
+};
 
 export default Game;
