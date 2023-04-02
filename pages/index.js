@@ -25,33 +25,61 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       {user && (
         <Grid
           container
           spacing={0}
           direction="column"
           alignItems="center"
-          justifyContent="center">
-            <Box sx={{ p: 4 }}>
-          <Typography variant="h1" color="secondary">Hacklahoma 2023</Typography>
+          justifyContent="center"
+        >
+          <Box sx={{ p: 4 }}>
+            <Typography variant="h1" color="secondary">
+              Hacklahoma 2023
+            </Typography>
           </Box>
           <Link href="/game">
-
-            <Button variant='contained'>Start Game</Button>
+            <Button variant="contained">Start Game</Button>
           </Link>
         </Grid>
       )}
 
-{!user && (
+      {!user && (
         <Grid
           container
           spacing={0}
           direction="column"
           alignItems="center"
-          justifyContent="center">
-            <Box sx={{ p: 25 }}>
-          <Typography variant="h1" color="secondary">Hacklahoma 2023</Typography>
+          justifyContent="center"
+        >
+          <Box
+            sx={{
+              p: 25,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <Typography align="center" variant="h1" color="secondary">
+              Hacklahoma 2023
+            </Typography>
+
+            <Typography align="center" variant="h3" color="secondary" sx={{mt: 3}}>
+              The Hack Strikes Back: Gambling
+            </Typography>
+
+            <Typography
+              align="center"
+              variant="h5"
+              color="secondary"
+              width={400}
+              sx={{ mx: "auto", mt: 3 }}
+            >
+              Inspired by the Vietnamese gambling game, Bầu Cua Tôm Cá. Help
+              Luke and his friends earn enough tokens to fight against the
+              empire by competitive betting!
+            </Typography>
           </Box>
         </Grid>
       )}
