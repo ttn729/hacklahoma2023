@@ -24,6 +24,7 @@ const Game = () => {
     });
     const data = await response.json();
 
+    console.log(data)
     setTokens(data.tokens);
   };
 

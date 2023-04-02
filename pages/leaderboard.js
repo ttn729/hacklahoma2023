@@ -55,7 +55,7 @@ export default function Leaderboard() {
           >
             <Box>
               <h1>Rank #{index + 1}</h1>
-              <h1>Email: {ranking.email}</h1>
+              <h1>Username: {ranking.name}</h1>
               <h1>Tokens: {ranking.tokens}</h1>
             </Box>
           </Box>
