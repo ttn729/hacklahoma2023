@@ -22,12 +22,16 @@ export default function Navbar() {
         sx={{
           display: "flex",
           float: "left",
-          flexDirection: "column",
+          flexDirection: "row",
           justifyContent: "center",
+          gap: "20px",
         }}
       >
         <Link href="/">
           <h1>Home</h1>
+        </Link>
+        <Link href="/leaderboard">
+          <h1>Leaderboard</h1>
         </Link>
       </Box>
 

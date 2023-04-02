@@ -1,12 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { Container, Button } from "@mui/material/";
 import Gamecard from "../components/Gamecard";
 import darthVader from "../public/darthVader.png";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
-export default function Game() {
+const Game = () => {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
-  const [tokens, setTokens] = React.useState(25);
+  const [tokens, setTokens] = React.useState(null);
+  const { user, error, isLoading } = useUser();
+
+  const getUserTokens = async () => {
+    const response = await fetch("/api/getTokenForUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+      }),
+    });
+    const data = await response.json();
+
+    setTokens(data.tokens);
+  };
+
+  useEffect(() => {
+    if (isLoading) return; // Wait for the user object to load
+
+    if (!user) {
+      router.push("/");
+    } else {
+      getUserTokens();
+    }
+  }, [user, isLoading]);
+
+  const router = useRouter();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+  if (tokens === null) return <div>Loading Tokens...</div>; // Add this line to wait for tokens
+
+  const outOfTokens = () => {
+    setTokens(5);
+    updateDB(5);
+  };
 
   const onClickRoll = () => {
     let tokensSpent = counters.reduce(function (a, b) {
@@ -16,12 +56,14 @@ export default function Game() {
     let dice = [];
 
     for (let i = 0; i < 3; ++i) {
-        dice.push(Math.floor(Math.random() * 6));
+      dice.push(Math.floor(Math.random() * 6));
     }
 
-    setTokens(
-      tokens - tokensSpent + calculateTokensEarned(counters, dice)
-    );
+    let newTokenValue =
+      tokens - tokensSpent + calculateTokensEarned(counters, dice);
+
+    setTokens(newTokenValue);
+    updateDB(newTokenValue);
     onClickReset();
   };
 
@@ -46,9 +88,39 @@ export default function Game() {
       }
     });
 
-    console.log("You earned this many tokens", delta);
+    if (delta !== 0) {
+      toast.success(
+        "You earned " +
+          (delta -
+            counters.reduce(function (a, b) {
+              return a + b;
+            })) +
+          " tokens."
+      );
+    } else {
+      toast.error(
+        "You lost " +
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) +
+          " tokens."
+      );
+    }
 
     return delta;
+  };
+
+  const updateDB = async (newTokenValue) => {
+    const response = await fetch("/api/updateTokens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+        tokens: newTokenValue,
+      }),
+    });
   };
 
   return (
@@ -56,8 +128,12 @@ export default function Game() {
       <h1>You currently have: {tokens} tokens.</h1>
       <Grid2 container spacing={2}>
         <Grid2 xs={4}>
-          <Gamecard index={0} counters={counters} setCounters={setCounters} image={darthVader}> 
-          </Gamecard>
+          <Gamecard
+            index={0}
+            counters={counters}
+            setCounters={setCounters}
+            image={darthVader}
+          ></Gamecard>
         </Grid2>
         <Grid2 xs={4}>
           <Gamecard
@@ -101,8 +177,24 @@ export default function Game() {
         </Grid2>
       </Grid2>
 
-      <Button onClick={onClickRoll}>Roll</Button>
+      <Button
+        onClick={onClickRoll}
+        disabled={
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) > tokens ||
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) === 0
+        }
+      >
+        Roll
+      </Button>
       <Button onClick={onClickReset}>Reset</Button>
+
+      {tokens === 0 && <Button onClick={outOfTokens}>Get More Tokens</Button>}
     </Container>
   );
-}
+};
+
+export default Game;
