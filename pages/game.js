@@ -4,8 +4,11 @@ import { Container, Button } from "@mui/material/";
 import Gamecard from "../components/Gamecard";
 import darthVader from "../public/darthVader.png";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRouter } from "next/router";
 
-export default function Game() {
+
+
+const Game = () => {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
   const [tokens, setTokens] = React.useState(null);
   const { user, error, isLoading } = useUser();
@@ -26,11 +29,16 @@ export default function Game() {
   };
 
   useEffect(() => {
-    if (user) {
-      console.log("user signed in")
+    if (isLoading) return; // Wait for the user object to load
+
+    if (!user) {
+      router.push("/");
+    } else {
       getUserTokens();
     }
-  }, [user]);
+  }, [user, isLoading]);
+
+  const router = useRouter();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -153,3 +161,5 @@ export default function Game() {
     </Container>
   );
 }
+
+export default Game;
