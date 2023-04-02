@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 import { Box, Button } from "@mui/material";
@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
+  const router = useRouter();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const [userName, setUserName] = useState("");
 
-  const getUserTokens = async () => {
+  const getUserTokens = useCallback(async () => {
     const response = await fetch("/api/getTokenForUser", {
       method: "POST",
       headers: {
@@ -25,20 +25,22 @@ export default function Navbar() {
     setUserName(data.name);
 
     console.log(data);
-  };
+  }, [user]);
 
   useEffect(() => {
-    if (isLoading) return; // Wait for the user object to load
+    if (isLoading) {
+      return; // Wait for the user object to load
+    }
 
     if (!user) {
       router.push("/");
     } else {
       getUserTokens();
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, getUserTokens, router]);
 
-  const router = useRouter();
-  const [userName, setUserName] = React.useState("");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
   return (
     <Box
