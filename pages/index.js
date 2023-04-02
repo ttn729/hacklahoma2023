@@ -35,7 +35,7 @@ export default function Home() {
           alignItems="center"
           justifyContent="center">
             <Box sx={{ p: 4 }}>
-          <Typography variant="h1">Hacklahoma '23</Typography>
+          <Typography variant="h1">Hacklahoma 2023</Typography>
           </Box>
           <Link href="/game">
 
