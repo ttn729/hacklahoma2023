@@ -28,14 +28,16 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    if (isLoading) return; // Wait for the user object to load
-
+    if (isLoading) {
+      return; // Wait for the user object to load
+    }
+  
     if (!user) {
       router.push("/");
     } else {
       getUserTokens();
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, getUserTokens, router]);
 
   const router = useRouter();
   const [userName, setUserName] = React.useState("");
