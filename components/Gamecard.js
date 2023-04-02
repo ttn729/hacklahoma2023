@@ -9,7 +9,7 @@ export default function Gamecard({ index, counters, setCounters, image }) {
     setCounters(copy);
   }
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 170 }}>
       <CardActionArea onClick={handleClick}>
         <Image src={image} alt="" width={150} height={150}/>
         <CardContent>{counters[index]}</CardContent>

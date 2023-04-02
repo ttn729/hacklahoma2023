@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
 
@@ -38,29 +38,36 @@ export default function Leaderboard() {
   }, [leaderboardRankings]);
 
   return (
-    <Box sx={{ padding: 5 }}>
-      <Typography variant="h1">Leaderboard Top 10</Typography>
-
-      {leaderboardRankings?.map((ranking, index) => {
-        return (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              flexdirection: "row",
-              alignItems: "center",
-              border: 1,
-              padding: 3,
-            }}
-          >
-            <Box>
-              <h1>Rank #{index + 1}</h1>
-              <h1>Username: {ranking.name}</h1>
-              <h1>Tokens: {ranking.tokens}</h1>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center">
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h1">Leaderboard</Typography>
+        
+        {leaderboardRankings?.map((ranking, index) => {
+          return (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                flexdirection: "row",
+                alignItems: "center",
+                // borderBottom: 0,
+                padding: 2,
+              }}
+            >
+              <Box>
+                <h1>Rank #{index + 1}</h1>
+                <h3>Email: {ranking.email}</h3>
+                <h3>Tokens: {ranking.tokens}</h3>
+              </Box>
             </Box>
-          </Box>
-        );
-      })}
-    </Box>
+          );
+        })}
+      </Box>
+    </Grid>
   );
 }
