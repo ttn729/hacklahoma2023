@@ -2,6 +2,7 @@ import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
@@ -38,15 +39,15 @@ export default function Navbar() {
       <Box sx={{ float: "right" }}>
         {!user && (
           <Button variant="contained">
-            <a href="/api/auth/login">Login</a>
+            <Link href="/api/auth/login">Login</Link>
           </Button>
         )}
 
         {user && (
           <Box sx={{ flexDirection: "column" }}>
-            <img src={user.picture} alt={user.name} />
+            <Image src={user.picture} alt={user.name} />
             <h2>{user.name}</h2>
-            <a href="/api/auth/logout">Logout</a>
+            <Link href="/api/auth/logout">Logout</Link>
           </Box>
         )}
       </Box>
