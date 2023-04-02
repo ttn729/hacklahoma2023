@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
+
 export default function Leaderboard() {
   const [leaderboardRankings, setLeaderboardRankings] = React.useState([]);
 

@@ -3,10 +3,16 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { Container, Button } from "@mui/material/";
 import Gamecard from "../components/Gamecard";
 import darthVader from "../public/darthVader.png";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Game() {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
   const [tokens, setTokens] = React.useState(25);
+
+  const { user, error, isLoading } = useUser();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
   const onClickRoll = () => {
     let tokensSpent = counters.reduce(function (a, b) {
@@ -16,12 +22,13 @@ export default function Game() {
     let dice = [];
 
     for (let i = 0; i < 3; ++i) {
-        dice.push(Math.floor(Math.random() * 6));
+      dice.push(Math.floor(Math.random() * 6));
     }
 
-    setTokens(
-      tokens - tokensSpent + calculateTokensEarned(counters, dice)
-    );
+    let newTokenValue = tokens - tokensSpent + calculateTokensEarned(counters, dice)
+
+    setTokens(newTokenValue);
+    updateDB(newTokenValue);
     onClickReset();
   };
 
@@ -51,13 +58,30 @@ export default function Game() {
     return delta;
   };
 
+  const updateDB = async (newTokenValue) => {
+    const response = await fetch("/api/updateTokens", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+        tokens: newTokenValue ,
+      }),
+    });
+  };
+
   return (
     <Container maxWidth="sm">
       <h1>You currently have: {tokens} tokens.</h1>
       <Grid2 container spacing={2}>
         <Grid2 xs={4}>
-          <Gamecard index={0} counters={counters} setCounters={setCounters} image={darthVader}> 
-          </Gamecard>
+          <Gamecard
+            index={0}
+            counters={counters}
+            setCounters={setCounters}
+            image={darthVader}
+          ></Gamecard>
         </Grid2>
         <Grid2 xs={4}>
           <Gamecard
