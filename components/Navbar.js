@@ -32,9 +32,7 @@ export default function Navbar() {
       return; // Wait for the user object to load
     }
 
-    if (!user) {
-      router.push("/");
-    } else {
+    if (user) {
       getUserTokens();
     }
   }, [user, isLoading, getUserTokens, router]);
