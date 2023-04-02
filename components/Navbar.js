@@ -45,7 +45,7 @@ export default function Navbar() {
 
         {user && (
           <Box sx={{ flexDirection: "column" }}>
-            <Image src={user.picture} alt={user.name} />
+            <img src={user.picture} alt={user.name}/>
             <h2>{user.name}</h2>
             <Link href="/api/auth/logout">Logout</Link>
           </Box>
