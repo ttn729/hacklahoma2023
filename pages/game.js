@@ -5,6 +5,7 @@ import Gamecard from "../components/Gamecard";
 import darthVader from "../public/darthVader.png";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const Game = () => {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
@@ -41,6 +42,11 @@ const Game = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
   if (tokens === null) return <div>Loading Tokens...</div>; // Add this line to wait for tokens
+
+  const outOfTokens = () => {
+    setTokens(5);
+    updateDB(5);
+  };
 
   const onClickRoll = () => {
     let tokensSpent = counters.reduce(function (a, b) {
@@ -82,7 +88,24 @@ const Game = () => {
       }
     });
 
-    console.log("You earned this many tokens", delta);
+    if (delta !== 0) {
+      toast.success(
+        "You earned " +
+          (delta -
+            counters.reduce(function (a, b) {
+              return a + b;
+            })) +
+          " tokens."
+      );
+    } else {
+      toast.error(
+        "You lost " +
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) +
+          " tokens."
+      );
+    }
 
     return delta;
   };
@@ -159,12 +182,17 @@ const Game = () => {
         disabled={
           counters.reduce(function (a, b) {
             return a + b;
-          }) > tokens
+          }) > tokens ||
+          counters.reduce(function (a, b) {
+            return a + b;
+          }) === 0
         }
       >
         Roll
       </Button>
       <Button onClick={onClickReset}>Reset</Button>
+
+      {tokens === 0 && <Button onClick={outOfTokens}>Get More Tokens</Button>}
     </Container>
   );
 };
