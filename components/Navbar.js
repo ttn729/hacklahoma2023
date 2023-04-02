@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 import { Box, Button } from "@mui/material";
@@ -8,10 +8,9 @@ export default function Navbar() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const [userName, setUserName] = useState("");
 
-  const getUserTokens = async () => {
+  const getUserTokens = useCallback(async () => {
     const response = await fetch("/api/getTokenForUser", {
       method: "POST",
       headers: {
@@ -26,7 +25,7 @@ export default function Navbar() {
     setUserName(data.name);
 
     console.log(data);
-  };
+  }, [user]);
 
   useEffect(() => {
     if (isLoading) {
@@ -40,7 +39,8 @@ export default function Navbar() {
     }
   }, [user, isLoading, getUserTokens, router]);
 
-  const [userName, setUserName] = React.useState("");
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
   return (
     <Box
