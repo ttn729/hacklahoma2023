@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { Container, Button } from "@mui/material/";
 import Gamecard from "../components/Gamecard";
@@ -7,12 +7,34 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Game() {
   const [counters, setCounters] = React.useState([0, 0, 0, 0, 0, 0]);
-  const [tokens, setTokens] = React.useState(25);
-
+  const [tokens, setTokens] = React.useState(null);
   const { user, error, isLoading } = useUser();
+
+  const getUserTokens = async () => {
+    const response = await fetch("/api/getTokenForUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email,
+      }),
+    });
+    const data = await response.json();
+
+    setTokens(data.tokens);
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log("user signed in")
+      getUserTokens();
+    }
+  }, [user]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
+  if (!tokens) return <div>Loading Tokens...</div>; // Add this line to wait for tokens
 
   const onClickRoll = () => {
     let tokensSpent = counters.reduce(function (a, b) {
@@ -25,7 +47,8 @@ export default function Game() {
       dice.push(Math.floor(Math.random() * 6));
     }
 
-    let newTokenValue = tokens - tokensSpent + calculateTokensEarned(counters, dice)
+    let newTokenValue =
+      tokens - tokensSpent + calculateTokensEarned(counters, dice);
 
     setTokens(newTokenValue);
     updateDB(newTokenValue);
@@ -66,7 +89,7 @@ export default function Game() {
       },
       body: JSON.stringify({
         email: user.email,
-        tokens: newTokenValue ,
+        tokens: newTokenValue,
       }),
     });
   };
