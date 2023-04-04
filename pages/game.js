@@ -24,7 +24,7 @@ const Game = () => {
     });
     const data = await response.json();
 
-    console.log(data)
+    console.log(data);
     setTokens(data.tokens);
   };
 
@@ -60,8 +60,21 @@ const Game = () => {
       dice.push(Math.floor(Math.random() * 6));
     }
 
-    let newTokenValue =
-      tokens - tokensSpent + calculateTokensEarned(counters, dice);
+    toast.dismiss();
+
+    toast.success(dice[0] + " " + dice[1] + " " + dice[2], {
+      position: "bottom-center", duration: 4000
+    });
+
+    let newTokenValue = tokens - tokensSpent + calculateTokensEarned(counters, dice);
+
+    if (newTokenValue >= tokens) {
+      toast.success("You earned " + (newTokenValue - tokens) + " tokens.");
+    }
+    else {
+      toast.error("You lost " + (tokens - newTokenValue) + " tokens.");
+
+    }
 
     setTokens(newTokenValue);
     updateDB(newTokenValue);
@@ -88,25 +101,6 @@ const Game = () => {
         seen.push(index);
       }
     });
-
-    if (delta !== 0) {
-      toast.success(
-        "You earned " +
-          (delta -
-            counters.reduce(function (a, b) {
-              return a + b;
-            })) +
-          " tokens."
-      );
-    } else {
-      toast.error(
-        "You lost " +
-          counters.reduce(function (a, b) {
-            return a + b;
-          }) +
-          " tokens."
-      );
-    }
 
     return delta;
   };

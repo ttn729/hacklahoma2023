@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, CardActionArea, Button, CardContent } from "@mui/material";
+import { Card, CardActionArea, Box, CardContent } from "@mui/material";
 import Image from "next/image";
 
 export default function Gamecard({ index, counters, setCounters, image }) {
@@ -11,7 +11,11 @@ export default function Gamecard({ index, counters, setCounters, image }) {
   return (
     <Card sx={{ maxWidth: 170 }}>
       <CardActionArea onClick={handleClick}>
-        <Image src={image} alt="" width={150} height={150}/>
+        <Box sx={{padding: 1}}>
+          <h1>{index}</h1>
+        </Box>
+
+        <Image src={image} alt="" width={150} height={150} />
         <CardContent>{counters[index]}</CardContent>
       </CardActionArea>
     </Card>
