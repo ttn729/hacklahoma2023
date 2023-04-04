@@ -62,7 +62,7 @@ const Game = () => {
 
     toast.dismiss();
 
-    toast.success(dice[0] + " " + dice[1] + " " + dice[2], {
+    toast.success("You rolled: " + dice[0] + " " + dice[1] + " " + dice[2], {
       position: "bottom-center", duration: 4000
     });
 
